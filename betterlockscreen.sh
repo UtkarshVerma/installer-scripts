@@ -26,34 +26,39 @@
 # Run this script as root
 
 # Install dependencies
+printf -- "--------------------------------------------------------------------------------------------------------------";
+printf "\n Installing dependencies. May take a few minutes.\n";
+printf -- "--------------------------------------------------------------------------------------------------------------\n";
+
 sudo apt install bc imagemagick libjpeg-turbo8-dev libpam0g-dev libxcb-composite0 libxcb-composite0-dev \
     libxcb-image0-dev libxcb-randr0 libxcb-util-dev libxcb-xinerama0 libxcb-xinerama0-dev libxcb-xkb-dev \
     libxkbcommon-x11-dev feh libev-dev;
 
 printf "\n";
 
+## Check if auxiliary packages are pre-installed or not
 AUX_PACK="build-essential checkinstall curl git";
-UNINSTALL="";
+ABSENT_PACKAGES="";
 for package in $AUX_PACK; do
 	packageExists="";
 	[[ $(echo `dpkg-query -W $package 2>&1` | grep -o "no packages found") = "" ]] && packageExists="exists";
-	[[ ! $packageExists ]] && UNINSTALL+="$package ";
+	[[ ! $packageExists ]] && ABSENT_PACKAGES+="$package ";
 done
-[[ $UNINSTALL ]] && sudo apt install $AUX_PACK;
+[[ $ABSENT_PACKAGES ]] && sudo apt install $AUX_PACK;
 
 printf "\n";
 
+## Install i3lock-color dependency
 git clone https://github.com/PandorasFox/i3lock-color && cd i3lock-color;
-autoreconf -i && ./configure;
-make && sudo checkinstall --pkgname=i3lock-color --pkgversion=1;
-
+autoreconf -i; ./configure;
+make; sudo checkinstall --pkgname=i3lock-color --pkgversion=1 -y;
 cd .. && sudo rm -r i3lock-color;
 
 printf -- "\n--------------------------------------------------------------------------------------------------------------";
 printf "\n Dependencies installed! Proceeding ahead with the script.\n";
 printf -- "--------------------------------------------------------------------------------------------------------------\n";
 
-# Fetch the script
+# Fetch the script and remove it after copying
 if [[ -f /usr/bin/betterlockscreen ]]; then
     sudo rm /usr/bin/betterlockscreen;
 fi
@@ -65,7 +70,8 @@ printf -- "\n-------------------------------------------------------------------
 printf "\n Script installed! Removing unused packages.\n";
 printf -- "--------------------------------------------------------------------------------------------------------------\n";
 
-[[ $UNINSTALL ]] && sudo apt remove $UNINSTALL;
+## Remove non-pre-existing auxiliary packages
+[[ $ABSENT_PACKAGES ]] && sudo apt remove $ABSENT_PACKAGES;
 
 printf -- "\n--------------------------------------------------------------------------------------------------------------";
 printf "\n Installation complete!";
