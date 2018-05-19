@@ -32,7 +32,14 @@ sudo apt install bc imagemagick libjpeg-turbo8-dev libpam0g-dev libxcb-composite
 
 printf "\n";
 
-sudo apt install checkinstall curl build-essential git;
+AUX_PACK="build-essential checkinstall curl git";
+UNINSTALL="";
+for package in $AUX_PACK; do
+	packageExists="";
+	[[ $(echo `dpkg-query -W $package 2>&1` | grep -o "no packages found") = "" ]] && packageExists="exists";
+	[[ ! $packageExists ]] && UNINSTALL+="$package ";
+done
+[[ $UNINSTALL ]] && sudo apt install $AUX_PACK;
 
 printf "\n";
 
@@ -53,6 +60,12 @@ fi
 curl -o script https://raw.githubusercontent.com/pavanjadhaw/betterlockscreen/master/betterlockscreen;
 sudo cp script /usr/bin/betterlockscreen;
 rm script;
+
+printf -- "\n--------------------------------------------------------------------------------------------------------------";
+printf "\n Script installed! Removing unused packages.\n";
+printf -- "--------------------------------------------------------------------------------------------------------------\n";
+
+[[ $UNINSTALL ]] && sudo apt remove $UNINSTALL;
 
 printf -- "\n--------------------------------------------------------------------------------------------------------------";
 printf "\n Installation complete!";
