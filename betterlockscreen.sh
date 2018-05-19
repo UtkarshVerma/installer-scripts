@@ -7,13 +7,15 @@ sudo apt install bc imagemagick libjpeg-turbo8-dev libpam0g-dev libxcb-composite
     libxcb-image0-dev libxcb-randr0 libxcb-util-dev libxcb-xinerama0 libxcb-xinerama0-dev libxcb-xkb-dev \
     libxkbcommon-x11-dev feh libev-dev;
 
+printf "\n";
+
 sudo apt install checkinstall curl build-essential git;
 
 printf "\n";
 
 git clone https://github.com/PandorasFox/i3lock-color && cd i3lock-color;
-autoreconf -i && ./configure.ac;
-make and sudo checkinstall --pkgname=i3lock-color --pkgversion=1;
+autoreconf -i && ./configure;
+make && sudo checkinstall --pkgname=i3lock-color --pkgversion=1;
 
 cd .. && sudo rm -r i3lock-color;
 
