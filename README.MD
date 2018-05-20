@@ -3,7 +3,7 @@ This repository contains installer scripts for various online resources. The aim
 
 The scripts are written in `bash`. They will remove the fetched resources and other auxiliary packages, installed during execution, after the completion of the installation.
 
-**Currently, these scripts are aimed at Debian systems only.**
+**Currently, these scripts are aimed at Debian systems and its derivatives, such as Ubuntu etc., only.**
 
 ## List of Scripts:
 The following installer scripts are currently present:
