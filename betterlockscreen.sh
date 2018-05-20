@@ -74,5 +74,5 @@ printf -- "---------------------------------------------------------------------
 [[ $ABSENT_PACKAGES ]] && sudo apt remove $ABSENT_PACKAGES;
 
 printf -- "\n--------------------------------------------------------------------------------------------------------------";
-printf "\n Installation complete!";
+printf "\n Installation complete! Feel free to use the 'betterlockscreen' command now.";
 printf -- "\n--------------------------------------------------------------------------------------------------------------";
