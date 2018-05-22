@@ -76,7 +76,7 @@ printf -- "---------------------------------------------------------------------
 [[ $ABSENT_PACKAGES ]] && sudo apt remove $ABSENT_PACKAGES;
 
 # Add logs for the installation candidate
-sudo echo "$install_candidate - Installed on $(date)" >> /etc/installer-scripts.log;
+echo "$install_candidate - Installed on $(date)" | sudo tee --append /etc/installer-scripts.log > /dev/null;
 
 printf -- "\n----------------------------------------------------------------------------------------------------";
 printf "\n Installation complete! Feel free to use the '$install_candidate' command now.";
