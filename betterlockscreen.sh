@@ -28,7 +28,6 @@
 # Installation candidate details
 install_candidate="betterlockscreen";
 vendor="GitHub/pavanjadhaw";
-version=$(git ls-remote --tags https://github.com/pavanjadhaw/betterlockscreen | tail -1 | grep -o "v.*$");
 
 # Install dependencies
 printf -- "----------------------------------------------------------------------------------------------------";
@@ -45,6 +44,9 @@ for package in $AUX_PACK; do
 done
 [[ $ABSENT_PACKAGES ]] && sudo apt install $AUX_PACK;
 printf "\n";
+
+# Fetch version of script
+version=$(git ls-remote --tags https://github.com/pavanjadhaw/betterlockscreen | tail -1 | grep -o "v.*$");
 
 ## Dependencies
 sudo apt install bc imagemagick libjpeg-turbo8-dev libpam0g-dev libxcb-composite0 libxcb-composite0-dev \
