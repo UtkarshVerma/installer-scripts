@@ -25,18 +25,15 @@
 # Bash installation script for installing 'https://github.com/pavanjadhaw/betterlockscreen' in one go.
 # Run this script as root
 
+# Installation candidate name
+install_candidate="betterlockscreen";
+
 # Install dependencies
-printf -- "--------------------------------------------------------------------------------------------------------------";
+printf -- "----------------------------------------------------------------------------------------------------";
 printf "\n Installing dependencies. May take a few minutes.\n";
-printf -- "--------------------------------------------------------------------------------------------------------------\n";
+printf -- "----------------------------------------------------------------------------------------------------\n";
 
-sudo apt install bc imagemagick libjpeg-turbo8-dev libpam0g-dev libxcb-composite0 libxcb-composite0-dev \
-    libxcb-image0-dev libxcb-randr0 libxcb-util-dev libxcb-xinerama0 libxcb-xinerama0-dev libxcb-xkb-dev \
-    libxkbcommon-x11-dev feh libev-dev;
-
-printf "\n";
-
-## Check if auxiliary packages are pre-installed or not
+## Check for and install absent auxiliary packages
 AUX_PACK="build-essential checkinstall curl git";
 ABSENT_PACKAGES="";
 for package in $AUX_PACK; do
@@ -45,7 +42,12 @@ for package in $AUX_PACK; do
 	[[ ! $packageExists ]] && ABSENT_PACKAGES+="$package ";
 done
 [[ $ABSENT_PACKAGES ]] && sudo apt install $AUX_PACK;
+printf "\n";
 
+## Dependencies
+sudo apt install bc imagemagick libjpeg-turbo8-dev libpam0g-dev libxcb-composite0 libxcb-composite0-dev \
+    libxcb-image0-dev libxcb-randr0 libxcb-util-dev libxcb-xinerama0 libxcb-xinerama0-dev libxcb-xkb-dev \
+    libxkbcommon-x11-dev feh libev-dev;
 printf "\n";
 
 ## Install i3lock-color dependency
@@ -54,9 +56,9 @@ autoreconf -i; ./configure;
 make; sudo checkinstall --pkgname=i3lock-color --pkgversion=1 -y;
 cd .. && sudo rm -r i3lock-color;
 
-printf -- "\n--------------------------------------------------------------------------------------------------------------";
+printf -- "\n----------------------------------------------------------------------------------------------------";
 printf "\n Dependencies installed! Proceeding ahead with the script.\n";
-printf -- "--------------------------------------------------------------------------------------------------------------\n";
+printf -- "----------------------------------------------------------------------------------------------------\n";
 
 # Fetch the script and remove it after copying
 if [[ -f /usr/bin/betterlockscreen ]]; then
@@ -66,13 +68,16 @@ curl -o script https://raw.githubusercontent.com/pavanjadhaw/betterlockscreen/ma
 sudo cp script /usr/bin/betterlockscreen;
 rm script;
 
-printf -- "\n--------------------------------------------------------------------------------------------------------------";
+printf -- "\n----------------------------------------------------------------------------------------------------";
 printf "\n Script installed! Removing unused packages.\n";
-printf -- "--------------------------------------------------------------------------------------------------------------\n";
+printf -- "----------------------------------------------------------------------------------------------------\n";
 
 ## Remove non-pre-existing auxiliary packages
 [[ $ABSENT_PACKAGES ]] && sudo apt remove $ABSENT_PACKAGES;
 
-printf -- "\n--------------------------------------------------------------------------------------------------------------";
-printf "\n Installation complete! Feel free to use the 'betterlockscreen' command now.";
-printf -- "\n--------------------------------------------------------------------------------------------------------------";
+# Add logs for the installation candidate
+sudo echo "$install_candidate - Installed on $(date)" >> /etc/installer-scripts.log;
+
+printf -- "\n----------------------------------------------------------------------------------------------------";
+printf "\n Installation complete! Feel free to use the '$install_candidate' command now.";
+printf -- "\n----------------------------------------------------------------------------------------------------";

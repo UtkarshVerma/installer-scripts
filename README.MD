@@ -5,6 +5,8 @@ The scripts are written in `bash`. They will remove the fetched resources and ot
 
 **Currently, these scripts are aimed at Debian systems and its derivatives, such as Ubuntu etc., only.**
 
+The installed packages are logged in the `/opt/installer-scripts.log` file after installation.
+
 ## List of Scripts:
 The following installer scripts are currently present:
 * betterlockscreen - [pavanjadhaw/betterlockscreen](https://github.com/pavanjadhaw/betterlockscreen)
