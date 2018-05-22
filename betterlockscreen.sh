@@ -25,8 +25,10 @@
 # Bash installation script for installing 'https://github.com/pavanjadhaw/betterlockscreen' in one go.
 # Run this script as root
 
-# Installation candidate name
+# Installation candidate details
 install_candidate="betterlockscreen";
+vendor="GitHub/pavanjadhaw";
+version=$(git ls-remote --tags https://github.com/pavanjadhaw/betterlockscreen | tail -1 | grep -o "v.*$");
 
 # Install dependencies
 printf -- "----------------------------------------------------------------------------------------------------";
@@ -76,7 +78,7 @@ printf -- "---------------------------------------------------------------------
 [[ $ABSENT_PACKAGES ]] && sudo apt remove $ABSENT_PACKAGES;
 
 # Add logs for the installation candidate
-echo "$install_candidate - Installed on $(date)" | sudo tee --append /etc/installer-scripts.log > /dev/null;
+echo "$install_candidate - $vendor; $version; $(date); $(date +%s)" | sudo tee --append /etc/installer-scripts.log > /dev/null;
 
 printf -- "\n----------------------------------------------------------------------------------------------------";
 printf "\n Installation complete! Feel free to use the '$install_candidate' command now.";
