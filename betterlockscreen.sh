@@ -49,9 +49,9 @@ printf "\n";
 version=$(git ls-remote --tags https://github.com/pavanjadhaw/betterlockscreen | tail -1 | grep -o "v.*$");
 
 ## Dependencies
-sudo apt install bc imagemagick libjpeg-turbo8-dev libpam0g-dev libxcb-composite0 libxcb-composite0-dev \
-    libxcb-image0-dev libxcb-randr0 libxcb-util-dev libxcb-xinerama0 libxcb-xinerama0-dev libxcb-xkb-dev \
-    libxkbcommon-x11-dev feh libev-dev;
+sudo apt install bc imagemagick libjpeg-turbo62-dev libpam0g-dev libxcb-composite0 libxcb-composite0-dev \
+    libxcb-image0-dev libxcb-randr0 libxcb-xinerama0 libxcb-xinerama0-dev libxcb-xkb-dev \
+    libxkbcommon-x11-dev feh libev-dev dh-autoreconf libxcb-util0-dev;
 printf "\n";
 
 ## Install i3lock-color dependency
