@@ -70,6 +70,7 @@ if [[ -f /usr/bin/betterlockscreen ]]; then
 fi
 curl -o script https://raw.githubusercontent.com/pavanjadhaw/betterlockscreen/master/betterlockscreen;
 sudo cp script /usr/bin/betterlockscreen;
+sudo chmod +x /usr/bin/betterlockscreen;
 rm script;
 
 printf -- "\n----------------------------------------------------------------------------------------------------";
