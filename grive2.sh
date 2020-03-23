@@ -22,21 +22,24 @@
 # SOFTWARE.
 #-------------------------------------------------------------------------------------
 
-# Bash installation script for installing 'https://github.com/pavanjadhaw/betterlockscreen' in one go.
+# Bash installation script for installing 'https://github.com/vitalif/grive2' in one go.
 # Run this script as root
 
 # Installation candidate details
-install_candidate="betterlockscreen";
-vendor="GitHub/pavanjadhaw";
-repo="https://github.com/pavanjadhaw/betterlockscreen"
+install_candidate="grive2";
+command="grive"
+vendor="GitHub/vitalif";
+repo="https://github.com/vitalif/grive2"
 
-# Install dependencies
+AUX_PACK="build-essential checkinstall cmake git pkg-config";
+DEP="libgcrypt20-dev libyajl-dev libboost-all-dev libcurl4-openssl-dev \
+    libexpat1-dev libcppunit-dev binutils-dev zlib1g-dev";
+
 printf -- "----------------------------------------------------------------------------------------------------";
 printf "\n Installing dependencies. May take a few minutes.\n";
-printf -- "----------------------------------------------------------------------------------------------------\n";
+printf -- "----------------------------------------------------------------------------------------------------";
 
-## Check for and install absent auxiliary packages
-AUX_PACK="build-essential checkinstall curl git";
+# Check for and install absent auxiliary packages
 ABSENT_PACKAGES="";
 for package in $AUX_PACK; do
 	packageExists="";
@@ -49,40 +52,35 @@ printf "\n";
 # Fetch version of script
 version=$(git ls-remote -q --tags $repo | tail -1 | grep -oP "(?<=v).*$");
 
-## Dependencies
-sudo apt install bc imagemagick libjpeg-turbo8-dev libpam0g-dev libxcb-composite0 libxcb-composite0-dev \
-    libxcb-image0-dev libxcb-randr0 libxcb-util-dev libxcb-xinerama0 libxcb-xinerama0-dev libxcb-xkb-dev \
-    libxkbcommon-x11-dev feh libev-dev;
-printf "\n";
-
-## Install i3lock-color dependency
-git clone https://github.com/PandorasFox/i3lock-color && cd i3lock-color;
-autoreconf -i; ./configure;
-make; sudo checkinstall --pkgname=i3lock-color --pkgversion=1 -y;
-cd .. && sudo rm -r i3lock-color;
+# Install dependencies
+sudo apt install $DEP;
 
 printf -- "\n----------------------------------------------------------------------------------------------------";
-printf "\n Dependencies installed! Proceeding ahead with the script.\n";
+printf "\n Dependencies installed! Proceeding ahead with the installation.\n";
 printf -- "----------------------------------------------------------------------------------------------------\n";
 
-# Fetch the script and remove it after copying
-if [[ -f /usr/bin/betterlockscreen ]]; then
-    sudo rm /usr/bin/betterlockscreen;
-fi
-curl -o script https://raw.githubusercontent.com/pavanjadhaw/betterlockscreen/master/betterlockscreen;
-sudo cp script /usr/bin/betterlockscreen;
-rm script;
+# Fetch the source code
+git clone $repo;
+
+# Build the source code and install it
+cd $install_candidate;
+mkdir build && cd build;
+cmake ..;
+make -j4;
+sudo checkinstall --pkgname $install_candidate --pkgversion $version -y;
 
 printf -- "\n----------------------------------------------------------------------------------------------------";
-printf "\n Script installed! Removing unused packages.\n";
-printf -- "----------------------------------------------------------------------------------------------------\n";
+printf "\n '$install_candidate' installed! Removing unused packages.\n";
+printf "\n If you wish to uninstall it, use 'sudo dpkg -r $install_candidate'."
+printf -- "\n----------------------------------------------------------------------------------------------------\n";
 
-## Remove non-pre-existing auxiliary packages
+# Remove non-pre-existing auxiliary packages
 [[ $ABSENT_PACKAGES ]] && sudo apt remove $ABSENT_PACKAGES;
 
 # Add logs for the installation candidate
-echo "$install_candidate - $vendor; $version; $(date); $(date +%s)" | sudo tee --append /etc/installer-scripts.log > /dev/null;
+echo "$install_candidate - $vendor; $version; $(date); $(date +%s)" | \
+	sudo tee --append /etc/installer-scripts.log > /dev/null;
 
 printf -- "\n----------------------------------------------------------------------------------------------------";
-printf "\n Installation complete! Feel free to use the '$install_candidate' command now.";
+printf "\n Installation complete! Feel free to use the '$command' command now.";
 printf -- "\n----------------------------------------------------------------------------------------------------";
