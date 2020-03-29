@@ -14,3 +14,4 @@ The installed packages are logged in the `/etc/installer-scripts.log` file after
 The following installer scripts are currently present:
 * betterlockscreen - [pavanjadhaw/betterlockscreen](https://github.com/pavanjadhaw/betterlockscreen)
 * grive2 - [vitalif/grive2](https://github.com/vitalif/grive2)
+* picom - [yshui/picom](https://github.com/yshui/picom)
